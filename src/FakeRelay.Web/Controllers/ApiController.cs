@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Immutable;
-using System.Threading.Tasks;
 using FakeRelay.Core.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
@@ -38,7 +36,7 @@ public class ApiController : Controller
         return host;
     }
 
-    [Route("index")]
+    [Route("index"), HttpPost]
     public async Task<ActionResult> DoIndex(string statusUrl)
     {
         var host = await GetHostFromRequest();

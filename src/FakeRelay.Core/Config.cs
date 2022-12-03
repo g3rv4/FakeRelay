@@ -12,13 +12,15 @@ public class Config
     public string Host { get; }
     
     public string ConfigPath { get; }
+    public string? HomeRedirect { get; }
 
-    private Config(string publicKey, byte[] privateKey, string host, string configPath)
+    private Config(string publicKey, byte[] privateKey, string host, string configPath, string? homeRedirect)
     {
         PrivateKey = privateKey;
         PublicKey = publicKey;
         Host = host;
         ConfigPath = configPath;
+        HomeRedirect = homeRedirect;
     }
 
     public static void Init(string path)
@@ -37,7 +39,7 @@ public class Config
         using var rsa = RSA.Create();
         rsa.ImportFromPem(data.PrivateKey.ToCharArray());
         
-        Instance = new Config(data.PublicKey, rsa.ExportRSAPrivateKey(), data.Host, path);
+        Instance = new Config(data.PublicKey, rsa.ExportRSAPrivateKey(), data.Host, path, data.HomeRedirect);
     }
 
     public static void CreateConfig(string path, string host, string publicKey, string privateKey)
@@ -56,5 +58,6 @@ public class Config
         public string? PublicKey { get; set; }
         public string? PrivateKey { get; set; }
         public string? Host { get; set; }
+        public string? HomeRedirect { get; set; }
     }
 }
