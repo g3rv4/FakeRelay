@@ -5,8 +5,6 @@ obj/
 *.csproj.user
 launchSettings.json
 .idea/
-config.json
-config-tokens.json
+data/
 .DS_Store
-DataDir*
 .build/

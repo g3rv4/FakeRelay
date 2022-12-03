@@ -1,10 +1,11 @@
+using FakeRelay.Cli.Settings;
 using FakeRelay.Core.Helpers;
 using Spectre.Console;
 using Spectre.Console.Cli;
 
 namespace FakeRelay.Cli.Commands;
 
-public class DeleteHostCommand: AsyncCommand<HostSettings>
+public class DeleteHostCommand : ConfigEnabledAsyncCommand<HostSettings>
 {
     public override async Task<int> ExecuteAsync(CommandContext context, HostSettings settings)
     {

@@ -1,10 +1,11 @@
+using FakeRelay.Cli.Settings;
 using FakeRelay.Core.Helpers;
 using Spectre.Console;
 using Spectre.Console.Cli;
 
 namespace FakeRelay.Cli.Commands;
 
-public class UpdateHostCommand : AsyncCommand<HostSettings>
+public class UpdateHostCommand : ConfigEnabledAsyncCommand<HostSettings>
 {
     public override async Task<int> ExecuteAsync(CommandContext context, HostSettings settings)
     {

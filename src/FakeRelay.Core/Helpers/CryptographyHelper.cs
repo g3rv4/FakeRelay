@@ -21,4 +21,14 @@ public class CryptographyHelper
         var signature = rsaProvider.SignData(Encoding.UTF8.GetBytes(stringToSign), sha256);
         return Convert.ToBase64String(signature);
     }
+
+    public static (string publicKey, string privateKey) GenerateKeys()
+    {
+        using var rsa = RSA.Create(4096);
+        
+        var pubKeyPem = new string(PemEncoding.Write("PUBLIC KEY", rsa.ExportSubjectPublicKeyInfo()));
+        var privKeyPem = new string(PemEncoding.Write("PRIVATE KEY", rsa.ExportPkcs8PrivateKey()));
+
+        return (pubKeyPem, privKeyPem);
+    }
 }

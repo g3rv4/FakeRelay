@@ -34,13 +34,27 @@ public class Config
             throw new Exception("Missing config parameters");
         }
         
-        Instance = new Config(data.PublicKey, Convert.FromBase64String(data.PrivateKey), data.Host, path);
+        using var rsa = RSA.Create();
+        rsa.ImportFromPem(data.PrivateKey.ToCharArray());
+        
+        Instance = new Config(data.PublicKey, rsa.ExportRSAPrivateKey(), data.Host, path);
+    }
+
+    public static void CreateConfig(string path, string host, string publicKey, string privateKey)
+    {
+        if (File.Exists(path))
+        {
+            throw new Exception("Can't create a new config file, there's one at " + path);
+        }
+
+        var data = new ConfigData { Host = host, PublicKey = publicKey, PrivateKey = privateKey };
+        File.WriteAllText(path, JSON.Serialize(data));
     }
 
     private class ConfigData
     {
-        public string? PublicKey { get; private set; }
-        public string? PrivateKey { get; private set; }
-        public string? Host { get; private set; }
+        public string? PublicKey { get; set; }
+        public string? PrivateKey { get; set; }
+        public string? Host { get; set; }
     }
 }
