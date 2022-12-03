@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeRelay.Web", "FakeRelay.Web\FakeRelay.Web.csproj", "{9AAB6AC5-AB58-45CF-99D0-B657E694368E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeRelay.Core", "FakeRelay.Core\FakeRelay.Core.csproj", "{EA9021D7-9E0A-4988-AC42-52204D135DCA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeRelay.Cli", "FakeRelay.Cli\FakeRelay.Cli.csproj", "{0615568F-5DBD-40E1-9925-98C84DB1EEF3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9AAB6AC5-AB58-45CF-99D0-B657E694368E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9AAB6AC5-AB58-45CF-99D0-B657E694368E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9AAB6AC5-AB58-45CF-99D0-B657E694368E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9AAB6AC5-AB58-45CF-99D0-B657E694368E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA9021D7-9E0A-4988-AC42-52204D135DCA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA9021D7-9E0A-4988-AC42-52204D135DCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA9021D7-9E0A-4988-AC42-52204D135DCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA9021D7-9E0A-4988-AC42-52204D135DCA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0615568F-5DBD-40E1-9925-98C84DB1EEF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0615568F-5DBD-40E1-9925-98C84DB1EEF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0615568F-5DBD-40E1-9925-98C84DB1EEF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0615568F-5DBD-40E1-9925-98C84DB1EEF3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
