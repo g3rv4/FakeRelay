@@ -81,6 +81,17 @@ The first time you run this it needs to create a key, you can trigger that using
 docker-compose run --rm cli config {relayHost}
 ```
 
+If you want requests to the homepage to redirect visitors somewhere, you can add a `"HomeRedirect"` entry on the generated `config.json`. The file would look like this:
+
+```
+{
+    "PublicKey": "-----BEGIN PUBLIC KEY-----\n...\n-----END PUBLIC KEY-----",
+    "PrivateKey": "-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----",
+    "Host": "fakerelay.gervas.io",
+    "HomeRedirect": "https://github.com/g3rv4/FakeRelay/"
+}
+```
+
 ### List authorized hosts
 ```
 g3rv4@s1:~/docker/FakeRelay$ docker-compose run --rm cli list-instances
