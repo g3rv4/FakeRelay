@@ -55,7 +55,7 @@ I'm using this `docker-compose.yml`:
 version: '2'
 services:
   fakerelay:
-    image: 'ghcr.io/g3rv4/fakerelay:1.0.3'
+    image: 'ghcr.io/g3rv4/fakerelay:latest'
     command: 'web'
     hostname: fakerelay
     environment:
@@ -66,7 +66,7 @@ services:
     volumes:
       - '/local/path/to/data:/data'
   cli:
-    image: 'ghcr.io/g3rv4/fakerelay:1.0.2'
+    image: 'ghcr.io/g3rv4/fakerelay:latest'
     volumes:
       - '/local/path/to/data:/data'
 ```
