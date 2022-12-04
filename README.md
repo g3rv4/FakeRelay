@@ -22,7 +22,7 @@ Ask the operator for an api key. If you want an api key for fakerelay.gervas.io,
 
 Your instance will receive traffic from this site as if it were a relay. But don't worry, it won't send anything except from the statuses you tell it to index.
 
-You need to go to `/admin/relays` and add `https://fakerelay.gervas.io` as a relay. That's it! and you can remove it whenever you want.
+You need to go to `/admin/relays` and add `https://fakerelay.gervas.io/inbox` as a relay. That's it! and you can remove it whenever you want.
 
 ### Figure what you want to index
 
