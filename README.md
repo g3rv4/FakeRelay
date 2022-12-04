@@ -39,6 +39,10 @@ curl -X "POST" "https://fakerelay.gervas.io/index" \
      --data-urlencode "statusUrl=https://mastodonte.tech/users/g3rv4/statuses/109370844647385274"
 ```
 
+## Can I see a demo?
+
+Sure! I recorded one [here](https://youtu.be/ungRlYKHS0E).
+
 ## I want to run this myself!
 
 Sure thing! The easiest way is doing so via `docker-compose`.
