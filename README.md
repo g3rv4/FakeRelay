@@ -81,12 +81,23 @@ The first time you run this it needs to create a key, you can trigger that using
 docker-compose run --rm cli config {relayHost}
 ```
 
+### List authorized hosts
+```
+g3rv4@s1:~/docker/FakeRelay$ docker-compose run --rm cli list-instances
+┌─────────────────┬──────────────────────────────────────────────────────────────────────────────────────────┐
+│ Host            │ Key                                                                                      │
+├─────────────────┼──────────────────────────────────────────────────────────────────────────────────────────┤
+│ m2.g3rv4.com    │ KlYKnm9GJcM0B1p8K98vw8FSpWzWOimZ7/3C9kTdWGUmK3xmFEJJwTZ1wqERVTugLH/9alYILFehqu9Ns2MEAw== │
+│ mastodon.social │ 1TxL6m1Esx6tnv4EPxscvAmdQN7qSn0nKeyoM7LD8b9mz+GNfrKaHiWgiT3QcNMUA+dWLyWD8qyl1MuKJ+4uHA== │
+└─────────────────┴──────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
 ### Add authorized hosts
 
 You can add hosts, and that will generate their tokens using the `add-host` command. That will output the key:
 
 ```
-g3rv4@s1:~/docker/FakeRelay$ docker-compose run --rm cli add-host mastodon.social
+g3rv4@s1:~/docker/FakeRelay$ docker-compose run --rm cli host add mastodon.social
 Key generated for mastodon.social
 vti7J0MDDw1O5EPRwfuUafJJjpErhXTwECGEvuw/G4UVWgLXtnrnmPIRRsOcvMD0juwSlvUnchIzgla030AIRw==
 ```
@@ -96,7 +107,7 @@ vti7J0MDDw1O5EPRwfuUafJJjpErhXTwECGEvuw/G4UVWgLXtnrnmPIRRsOcvMD0juwSlvUnchIzgla0
 You can use `update-host` to rotate a hosts' key:
 
 ```
-g3rv4@s1:~/docker/FakeRelay$ docker-compose run --rm cli update-host mastodon.social
+g3rv4@s1:~/docker/FakeRelay$ docker-compose run --rm cli host update mastodon.social
 Key generated for mastodon.social
 wpSX9xpPgX0gjgAxO0Jc+GLSOXubVgv73FOvAihR2EmgK/AfDHz21sF72uqrLnVGzcq2BDXosMeKdFR76q6fpg==
 ```
@@ -106,6 +117,6 @@ wpSX9xpPgX0gjgAxO0Jc+GLSOXubVgv73FOvAihR2EmgK/AfDHz21sF72uqrLnVGzcq2BDXosMeKdFR7
 If you want to revoke a host's key, you can use `delete-host`:
 
 ```
-g3rv4@s1:~/docker/FakeRelay$ docker-compose run --rm cli delete-host mastodon.social
+g3rv4@s1:~/docker/FakeRelay$ docker-compose run --rm cli host delete mastodon.social
 Key deleted for mastodon.social
 ```
