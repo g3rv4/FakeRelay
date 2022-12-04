@@ -9,5 +9,6 @@ FROM mcr.microsoft.com/dotnet/aspnet:6.0.11-alpine3.16
 VOLUME ["/data"]
 ENV CONFIG_PATH=/data/config.json
 COPY --from=builder /app /app
-RUN ln -s /app/FakeRelay.Cli /bin/cli
-RUN ln -s /app/FakeRelay.Web /bin/web
+COPY entrypoint.sh /app/entrypoint.sh
+RUN ln -s /app/FakeRelay.Cli /bin/cli && ln -s /app/FakeRelay.Web /bin/web && chmod +x /app/entrypoint.sh
+ENTRYPOINT [ "/app/entrypoint.sh" ]
