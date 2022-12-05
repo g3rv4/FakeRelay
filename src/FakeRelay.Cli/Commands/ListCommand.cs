@@ -17,7 +17,7 @@ public class ListInstancesCommand : ConfigEnabledAsyncCommand<EmptyCommandSettin
         table.AddColumn("Instance");
         table.AddColumn("Key");
 
-        foreach (var group in hostToKeys)
+        foreach (var group in hostToKeys.OrderBy(g => g.Key))
         {
             var host = group.Key;
             foreach (var key in group)
@@ -25,7 +25,7 @@ public class ListInstancesCommand : ConfigEnabledAsyncCommand<EmptyCommandSettin
                 table.AddRow($"[green]{host}[/]", $"[red]{key}[/]");
             }
         }
-        
+
         AnsiConsole.Write(table);
         return 0;
     }
