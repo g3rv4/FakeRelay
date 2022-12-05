@@ -3,7 +3,7 @@ using Spectre.Console.Cli;
 
 namespace FakeRelay.Cli.Settings;
 
-public class HostSettings : EmptyBaseSettings
+public class InstanceSettings : EmptyBaseSettings
 {
     [Description("The instance that connects to this FakeRelay.")]
     [CommandArgument(0, "<INSTANCE_HOST>")]

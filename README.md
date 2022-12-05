@@ -56,7 +56,7 @@ version: '2'
 services:
   fakerelay:
     image: 'ghcr.io/g3rv4/fakerelay:latest'
-    command: 'web'
+    command: web
     hostname: fakerelay
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
@@ -92,42 +92,42 @@ If you want requests to the homepage to redirect visitors somewhere, you can add
 }
 ```
 
-### List authorized hosts
+### List authorized instances
 ```
 g3rv4@s1:~/docker/FakeRelay$ docker-compose run --rm cli list-instances
 ┌─────────────────┬──────────────────────────────────────────────────────────────────────────────────────────┐
-│ Host            │ Key                                                                                      │
+│ Instance        │ Key                                                                                      │
 ├─────────────────┼──────────────────────────────────────────────────────────────────────────────────────────┤
 │ m2.g3rv4.com    │ KlYKnm9GJcM0B1p8K98vw8FSpWzWOimZ7/3C9kTdWGUmK3xmFEJJwTZ1wqERVTugLH/9alYILFehqu9Ns2MEAw== │
 │ mastodon.social │ 1TxL6m1Esx6tnv4EPxscvAmdQN7qSn0nKeyoM7LD8b9mz+GNfrKaHiWgiT3QcNMUA+dWLyWD8qyl1MuKJ+4uHA== │
 └─────────────────┴──────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-### Add authorized hosts
+### Add authorized instance
 
-You can add hosts, and that will generate their tokens using the `add-host` command. That will output the key:
+When you add an instance, the system will generate a token to index stuff on it and return that:
 
 ```
-g3rv4@s1:~/docker/FakeRelay$ docker-compose run --rm cli host add mastodon.social
+g3rv4@s1:~/docker/FakeRelay$ docker-compose run --rm cli instance add mastodon.social
 Key generated for mastodon.social
 vti7J0MDDw1O5EPRwfuUafJJjpErhXTwECGEvuw/G4UVWgLXtnrnmPIRRsOcvMD0juwSlvUnchIzgla030AIRw==
 ```
 
 ### Rotate a key
 
-You can use `update-host` to rotate a hosts' key:
+You can use `instance update` to rotate a instance's key:
 
 ```
-g3rv4@s1:~/docker/FakeRelay$ docker-compose run --rm cli host update mastodon.social
+g3rv4@s1:~/docker/FakeRelay$ docker-compose run --rm cli instance update mastodon.social
 Key generated for mastodon.social
 wpSX9xpPgX0gjgAxO0Jc+GLSOXubVgv73FOvAihR2EmgK/AfDHz21sF72uqrLnVGzcq2BDXosMeKdFR76q6fpg==
 ```
 
-### Remove a host
+### Remove an instance
 
-If you want to revoke a host's key, you can use `delete-host`:
+If you want to revoke a instance's key, you can use `instance delete`:
 
 ```
-g3rv4@s1:~/docker/FakeRelay$ docker-compose run --rm cli host delete mastodon.social
+g3rv4@s1:~/docker/FakeRelay$ docker-compose run --rm cli instance delete mastodon.social
 Key deleted for mastodon.social
 ```

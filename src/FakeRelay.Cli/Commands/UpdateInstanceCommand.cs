@@ -5,9 +5,9 @@ using Spectre.Console.Cli;
 
 namespace FakeRelay.Cli.Commands;
 
-public class UpdateHostCommand : ConfigEnabledAsyncCommand<HostSettings>
+public class UpdateInstanceCommand : ConfigEnabledAsyncCommand<InstanceSettings>
 {
-    public override async Task<int> ExecuteAsync(CommandContext context, HostSettings settings)
+    public override async Task<int> ExecuteAsync(CommandContext context, InstanceSettings settings)
     {
         var token = await ApiKeysHelper.UpdateTokenForHostAsync(settings.Host);
         AnsiConsole.Markup($"[green]Key generated for {settings.Host}[/]\n");

@@ -5,14 +5,14 @@ using Spectre.Console.Cli;
 var app = new CommandApp();
 app.Configure(config =>
 {
-    config.AddBranch<EmptyBaseSettings>("host", host =>
+    config.AddBranch<EmptyBaseSettings>("instance", instance =>
     {
-        host.AddCommand<AddHostCommand>("add")
-            .WithDescription("Adds a host to the relay and generates a key.");
-        host.AddCommand<UpdateHostCommand>("update")
-            .WithDescription("Generates a new key for the host. The old one can't be used anymore.");
-        host.AddCommand<DeleteHostCommand>("delete")
-            .WithDescription("Deletes the existing keys for the host. They can't use FakeRelay anymore.");
+        instance.AddCommand<AddInstanceCommand>("add")
+            .WithDescription("Adds an instance to the relay and generates a key.");
+        instance.AddCommand<UpdateInstanceCommand>("update")
+            .WithDescription("Generates a new key for the instance. The old one can't be used anymore.");
+        instance.AddCommand<DeleteInstanceCommand>("delete")
+            .WithDescription("Deletes the existing keys for the instance. They can't use FakeRelay anymore.");
     });
     
     config.AddCommand<ListInstancesCommand>("list-instances")

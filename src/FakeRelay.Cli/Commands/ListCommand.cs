@@ -14,7 +14,7 @@ public class ListInstancesCommand : ConfigEnabledAsyncCommand<EmptyCommandSettin
         // Create a table
         var table = new Table();
         
-        table.AddColumn("Host");
+        table.AddColumn("Instance");
         table.AddColumn("Key");
 
         foreach (var group in hostToKeys)
