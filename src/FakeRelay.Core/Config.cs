@@ -30,6 +30,11 @@ public class Config
             return;
         }
 
+        if (!File.Exists(path))
+        {
+            throw new Exception("Config file does not exist. Run the config command to create it.");
+        }
+
         var data = JSON.Deserialize<ConfigData>(File.ReadAllText(path));
         if (data.PublicKey == null || data.PrivateKey == null || data.Host == null)
         {
