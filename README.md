@@ -45,7 +45,9 @@ Sure! I recorded one [here](https://youtu.be/ungRlYKHS0E).
 
 ## I want to run this myself!
 
-Sure thing! The easiest way is doing so via `docker-compose`.
+Sure thing! The easiest way is doing so via `docker-compose`. One important thing to notice is that all the instances that use your FakeRelay will treat it as a real relay. That means they will send traffic your way.
+
+FakeRelay ignores this traffic, but that will still count against your badwidth. What I did is I set up Cloudflare so that it only forwards `POST`s to `/inbox` if the `type` is `Follow`.
 
 ### Setting up docker compose
 
