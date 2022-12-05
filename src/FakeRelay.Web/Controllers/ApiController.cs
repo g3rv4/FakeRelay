@@ -46,6 +46,7 @@ public class ApiController : Controller
         }
         
         var response = await MastodonHelper.EnqueueStatusToFetchAsync(host, statusUrl);
+        Response.Headers["instance"] = host;
         return Content(response, "application/activity+json");
     }
 }
