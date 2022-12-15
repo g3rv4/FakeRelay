@@ -67,6 +67,8 @@ services:
     restart: always
     volumes:
       - '/local/path/to/data:/data'
+    ports:
+      - 5000:5000
   cli:
     image: 'ghcr.io/g3rv4/fakerelay:latest'
     volumes:
@@ -74,6 +76,35 @@ services:
 ```
 
 That will store the configuration files at `/local/path/to/data` (they are a couple json files).
+
+### Setup SSL reverse proxy
+The relay needs to be accessible via a domain name with https. The subdomain can be served via a reverse proxy that also handles the SSL encryption. 
+
+#### Nginx config file
+```
+server {
+  listen 443 ssl http2;
+  listen [::]:443 http2 ssl;
+
+  # Uncomment and change these lines if you want to restrict access to fakerelay
+  # allow Your-Instance-IPv6-address;
+  # allow Your-Instance-IPv4-address;
+  # allow GetMoarFediverse-Container-IP;
+  # deny all;
+
+  server_name relay.domain.tld;
+
+  location / {
+    proxy_pass http://127.0.0.1:5000;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header Host $host;
+    proxy_max_temp_file_size 0;
+  }
+
+    #ssl_certificate /etc/letsencrypt/live/relay.domain.tld/fullchain.pem; # managed by Certbot
+    #ssl_certificate_key /etc/letsencrypt/live/relay.domain.tld/privkey.pem; # managed by Certbot
+}
+```
 
 ### Configure the app
 
