@@ -2,7 +2,12 @@ using FakeRelay.Core;
 using FakeRelay.Web.Services;
 using Microsoft.AspNetCore.HttpOverrides;
 
-var builder = WebApplication.CreateBuilder(args);
+var webApplicationOptions = new WebApplicationOptions
+{
+    ContentRootPath = AppContext.BaseDirectory,
+    Args = args,
+};    
+var builder = WebApplication.CreateBuilder(webApplicationOptions);
 Config.Init(builder.Configuration.GetValue<string>("CONFIG_PATH"));
 
 // Add services to the container.
