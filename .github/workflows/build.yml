@@ -6,6 +6,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        architecture: [ amd64, arm64v8 ]
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -25,6 +28,17 @@ jobs:
           Write-Host "Version $version"
           Pop-Location
 
-          docker build . --tag ghcr.io/g3rv4/fakerelay:latest --tag "ghcr.io/g3rv4/fakerelay:$version"
-          docker push ghcr.io/g3rv4/fakerelay:latest
-          docker push "ghcr.io/g3rv4/fakerelay:$version"
+          if ('${{ matrix.architecture }}' -eq 'arm64v8') {
+            sudo apt-get install qemu binfmt-support qemu-user-static
+            docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+          }
+
+          docker build . -t ghcr.io/g3rv4/fakerelay:latest-${{ matrix.architecture }} --build-arg ARCH=${{ matrix.architecture }}
+          docker tag ghcr.io/g3rv4/fakerelay:latest-${{ matrix.architecture }} ghcr.io/g3rv4/fakerelay:$version-${{ matrix.architecture }}
+          docker push ghcr.io/g3rv4/fakerelay:latest-${{ matrix.architecture }}
+          docker push ghcr.io/g3rv4/fakerelay:$version-${{ matrix.architecture }}
+
+          if ('${{ matrix.architecture }}' -eq 'amd64') {
+            docker tag ghcr.io/g3rv4/fakerelay:latest-${{ matrix.architecture }} ghcr.io/g3rv4/fakerelay:latest
+            docker push ghcr.io/g3rv4/fakerelay:latest
+          }
