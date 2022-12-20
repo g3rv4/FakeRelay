@@ -19,8 +19,8 @@ I use it to load content with #hashtags I care about. How? well, that's a separa
 
 Other people have built other things on top of FakeRelay:
 
-* Abhinav Sarkar wrote [an article](https://notes.abhinavsarkar.net/2022/fake-relay) showing how you can achieve something similar to GetMoarFediverse in Python
-* Raynor built [Fake Firehose](https://github.com/raynormast/fake-firehose), a tool that streams content from other instances and pushes that to FakeRelay.
+* [Abhinav](https://fantastic.earth/@abnv) wrote [an article](https://notes.abhinavsarkar.net/2022/fake-relay) showing how you can achieve something similar to GetMoarFediverse in Python
+* [Raynor](https://mastodonte.tech/@raynor@raynor.haus) built [Fake Firehose](https://github.com/raynormast/fake-firehose), a tool that streams content from other instances and pushes that to FakeRelay.
 
 ## How can I use it?
 
