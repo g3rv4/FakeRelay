@@ -2,21 +2,33 @@
 
 FakeRelay is a tool for Mastodon admins to load statuses into their instances.
 
+More importantly, FakeRelay is NOT:
+
+* A relay. Even if from Mastodon's point of view it is a relay, if multiple instances are connected to it *it won't* share their posts.
+* A scraper. FakeRelay receives a post's url and sends that to the registered instance.
+
 ## Why is it needed?
 
-If you're on a small or solo instance, following a hashtag doesn't provide a lot of value. This is because you'll only see stuff that's on the instance's federated timeline... but if you're the only user, the federated timeline is the same as your timeline.
+If you're an admin of an instance, it's not really that easy to tell it "hey, index this post!". One thing any user can do is hit the `/api/v2/search` endpoint using `resolve=true`. That does accomplish the goal of fetching the post, but it's a synchronous call so it can take some seconds.
 
-Discovering what to index isn't hard (I'm hitting big instances' `/tags/{interestingTag}.json` routes to fetch the content I want), but telling my instance that I want to bring over a toot isn't straightforward.
+FakeRelay exposes an API to use the ActivityPub `/inbox` endpoint as if it were a relay. And then, the request is queued and eventually processed.
 
-One thing any user can do is hit the `/api/v2/search` endpoint using `resolve=true`. That does accomplish the goal of fetching the status, but it's a synchronous call so it can take some seconds.
+## What can I use it for?
 
-This project uses the ActivityPub `/inbox` endpoint as if it were a relay. And then, the request is queued and eventually processed.
+I use it to load content with #hashtags I care about. How? well, that's a separate project: [GetMoarFediverse](https://github.com/g3rv4/GetMoarFediverse).
+
+Other people have built other things on top of FakeRelay:
+
+* Abhinav Sarkar wrote [an article](https://notes.abhinavsarkar.net/2022/fake-relay) showing how you can achieve something similar to GetMoarFediverse in Python
+* Raynor built [Fake Firehose](https://github.com/raynormast/fake-firehose), a tool that streams content from other instances and pushes that to FakeRelay.
 
 ## How can I use it?
 
 ### You need to get an api key
 
 Ask the operator for an api key. If you want an api key for fakerelay.gervas.io, I'm `@g3rv4@mastodonte.tech`. Send me a toot with your instance domain and I'll get you one. The API key will be associated with your domain.
+
+I'm hosting this behind Cloudflare Workers. So if you have a lot of traffic, I'll ask you to run it on your infrastructure :)
 
 ### Add the relay to your instance
 
