@@ -4,8 +4,14 @@ namespace FakeRelay.Core.Helpers;
 
 public static class MastodonHelper
 {
-    public static Task<string> EnqueueStatusToFetchAsync(string targetHost, string statusUrl) =>
-        SendMessageToInboxAsync(targetHost, $@"{{
+    public static async Task<string> EnqueueStatusToFetchAsync(string targetHost, string statusUrl)
+    {
+        if (statusUrl.StartsWithCI($"https://{targetHost}") || statusUrl.StartsWithCI($"http://{targetHost}"))
+        {
+            return "Status ignored, it's local";
+        }
+        
+        return await SendMessageToInboxAsync(targetHost, $@"{{
     ""@context"": ""https://www.w3.org/ns/activitystreams"",
     ""actor"": ""https://{Config.Instance.Host}/actor"",
     ""id"": ""https://{Config.Instance.Host}/activities/{Guid.NewGuid()}"",
@@ -15,6 +21,7 @@ public static class MastodonHelper
     ],
     ""type"": ""Announce""
 }}");
+    }
 
     public static async Task<string> SendMessageToInboxAsync(string targetHost, string content)
     {
