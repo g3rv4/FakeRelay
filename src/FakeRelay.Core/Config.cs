@@ -5,7 +5,7 @@ namespace FakeRelay.Core;
 
 public class Config
 {
-    public static Config? Instance { get; private set; }
+    public static Config Instance { get; private set; } = new();
     
     public byte[] PrivateKey { get; }
     public string PublicKey { get; }
@@ -13,6 +13,12 @@ public class Config
     
     public string ConfigPath { get; }
     public string? HomeRedirect { get; }
+
+    private Config()
+    {
+        PrivateKey = Array.Empty<byte>();
+        PublicKey = Host = ConfigPath = "";
+    }
 
     private Config(string publicKey, byte[] privateKey, string host, string configPath, string? homeRedirect)
     {
@@ -25,7 +31,7 @@ public class Config
 
     public static void Init(string path)
     {
-        if (Instance != null)
+        if (Instance.Host != "")
         {
             return;
         }

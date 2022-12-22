@@ -10,11 +10,13 @@ public class ListInstancesCommand : ConfigEnabledAsyncCommand<EmptyCommandSettin
     {
         var keyToHost = await ApiKeysHelper.GetTokenToHostAsync();
         var hostToKeys = keyToHost.ToLookup(d => d.Value, d => d.Key);
+        var hostToNotes = await ApiKeysHelper.GetHostToNotesAsync();
         
         // Create a table
         var table = new Table();
         
         table.AddColumn("Instance");
+        table.AddColumn("Notes");
         table.AddColumn("Key");
 
         foreach (var group in hostToKeys.OrderBy(g => g.Key))
@@ -22,7 +24,8 @@ public class ListInstancesCommand : ConfigEnabledAsyncCommand<EmptyCommandSettin
             var host = group.Key;
             foreach (var key in group)
             {
-                table.AddRow($"[green]{host}[/]", $"[red]{key}[/]");
+                var notes = hostToNotes.GetValueOrDefault(host) ?? "";
+                table.AddRow($"[green]{host}[/]", notes , $"[red]{key}[/]");
             }
         }
 

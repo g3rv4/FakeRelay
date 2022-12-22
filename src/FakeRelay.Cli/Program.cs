@@ -9,6 +9,8 @@ app.Configure(config =>
     {
         instance.AddCommand<AddInstanceCommand>("add")
             .WithDescription("Adds an instance to the relay and generates a key.");
+        instance.AddCommand<AnnotateInstanceCommand>("annotate")
+            .WithDescription("Adds or updates the notes associated with the instance.");
         instance.AddCommand<UpdateInstanceCommand>("update")
             .WithDescription("Generates a new key for the instance. The old one can't be used anymore.");
         instance.AddCommand<DeleteInstanceCommand>("delete")

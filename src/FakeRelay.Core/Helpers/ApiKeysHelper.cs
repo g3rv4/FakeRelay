@@ -7,7 +7,12 @@ namespace FakeRelay.Core.Helpers;
 public static class ApiKeysHelper
 {
     private static string? _tokensFilePath;
-    private static string TokensFilePath => _tokensFilePath ??= Config.Instance.ConfigPath.Replace(".json", "-tokens.json");
+    private static string TokensFilePath =>
+        _tokensFilePath ??= Config.Instance.ConfigPath.Replace(".json", "-tokens.json");
+    
+    private static string? _notesFilePath;
+    private static string NotesFilePath =>
+        _notesFilePath ??= Config.Instance.ConfigPath.Replace(".json", "-notes.json");
 
     public static async Task<ImmutableDictionary<string, string>> GetTokenToHostAsync()
     {
@@ -19,6 +24,19 @@ public static class ApiKeysHelper
         var content = await File.ReadAllTextAsync(TokensFilePath);
         return JSON.Deserialize<Dictionary<string, string>>(content)
             .ToImmutableDictionary(StringComparer.OrdinalIgnoreCase);
+    }
+
+    public static async Task<Dictionary<string, string>> GetHostToNotesAsync()
+    {
+        if (!File.Exists(NotesFilePath))
+        {
+            return new Dictionary<string, string>();
+        }
+        
+        var content = await File.ReadAllTextAsync(NotesFilePath);
+        return JSON.Deserialize<Dictionary<string, string>>(content)
+            // set the comparer so that it's case insensitive
+            .ToDictionary(e => e.Key, e => e.Value, StringComparer.OrdinalIgnoreCase);
     }
 
     public static async Task<string> UpdateTokenForHostAsync(string host)
@@ -38,8 +56,41 @@ public static class ApiKeysHelper
         return await AddTokenForHostAsync(host, dict);
     }
 
-    public static async Task<string> AddTokenForHostAsync(string host) =>
-        await AddTokenForHostAsync(host, await GetTokenToHostAsync());
+    public static async Task UpdateNotesForHostAsync(string host, string? notes)
+    {
+        var tokensToHost = await GetTokenToHostAsync();
+        if (!tokensToHost.Values.Contains(host))
+        {
+            throw new Exception($"There's no entry for {host}");
+        }
+
+        var notesDict = await GetHostToNotesAsync();
+        if (notes.HasValue())
+        {
+            notesDict[host] = notes;
+        }
+        else if (notesDict.ContainsKey(host))
+        {
+            notesDict.Remove(host);
+        }
+        else
+        {
+            return;
+        }
+
+        var content = JSON.Serialize(notesDict);
+        await File.WriteAllTextAsync(NotesFilePath, content);
+    }
+
+    public static async Task<string> AddTokenForHostAsync(string host, string? notes)
+    {
+        if (notes.HasValue())
+        {
+            await UpdateNotesForHostAsync(host, notes);
+        }
+        
+        return await AddTokenForHostAsync(host, await GetTokenToHostAsync());
+    }
 
     public static async Task DeleteTokenForHostAsync(string host)
     {
