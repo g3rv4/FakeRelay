@@ -84,12 +84,14 @@ public static class ApiKeysHelper
 
     public static async Task<string> AddTokenForHostAsync(string host, string? notes)
     {
+        var token = await AddTokenForHostAsync(host, await GetTokenToHostAsync());
+        
         if (notes.HasValue())
         {
             await UpdateNotesForHostAsync(host, notes);
         }
-        
-        return await AddTokenForHostAsync(host, await GetTokenToHostAsync());
+
+        return token;
     }
 
     public static async Task DeleteTokenForHostAsync(string host)
