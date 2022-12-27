@@ -123,7 +123,7 @@ server {
 The first time you run this it needs to create a key, you can trigger that using:
 
 ```
-docker-compose run --rm cli config {relayHost}
+docker-compose run --rm cli config ${RELAY_HOST}
 ```
 
 If you want requests to the homepage to redirect visitors somewhere, you can add a `"HomeRedirect"` entry on the generated `config.json`. The file would look like this:
