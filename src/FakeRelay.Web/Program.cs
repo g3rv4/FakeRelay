@@ -1,6 +1,7 @@
 using FakeRelay.Core;
 using FakeRelay.Web.Services;
 using Microsoft.AspNetCore.HttpOverrides;
+using Prometheus;
 
 var webApplicationOptions = new WebApplicationOptions
 {
@@ -47,5 +48,10 @@ app.UseAuthorization();
 app.MapControllerRoute(
     "default",
     "{controller=Home}/{action=Index}/{id?}");
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapMetrics();
+});
 
 app.Run();

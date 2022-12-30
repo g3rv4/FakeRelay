@@ -2,12 +2,15 @@ using System.Collections.Immutable;
 using FakeRelay.Core.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
+using Prometheus;
 
 namespace FakeRelay.Web.Controllers;
 
 public class ApiController : Controller
 {
     private readonly IMemoryCache _memoryCache;
+    private static readonly Counter IndexRequests =
+        Metrics.CreateCounter("index_requests", "Requests to index statuses", "instance");
 
     public ApiController(IMemoryCache memoryCache)
     {
@@ -46,6 +49,7 @@ public class ApiController : Controller
         }
         
         var response = await MastodonHelper.EnqueueStatusToFetchAsync(host, statusUrl);
+        IndexRequests.WithLabels(host).Inc();
         Response.Headers["instance"] = host;
         return Content(response, "application/activity+json");
     }
