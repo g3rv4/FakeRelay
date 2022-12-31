@@ -49,9 +49,13 @@ app.MapControllerRoute(
     "default",
     "{controller=Home}/{action=Index}/{id?}");
 
-app.UseEndpoints(endpoints =>
+var useMetrics = builder.Configuration.GetValue<bool?>("EXPOSE_METRICS");
+if (useMetrics == true)
 {
-    endpoints.MapMetrics();
-});
+    app.UseEndpoints(endpoints =>
+    {
+        endpoints.MapMetrics();
+    });
+}
 
 app.Run();
