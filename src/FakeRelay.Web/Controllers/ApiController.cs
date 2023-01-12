@@ -59,12 +59,12 @@ public class ApiController : Controller
     [Route("index-posts-count")]
     public async Task<ActionResult> IndexedPostsCount(string period)
     {
-        if (Config.Instance.GrafanaHost.IsNullOrEmpty() || Config.Instance.GrafanaKey.IsNullOrEmpty())
+        if (Config.Instance.GrafanaHost.IsNullOrEmpty() || Config.Instance.GrafanaKey.IsNullOrEmpty() || !Config.Instance.GrafanaDataSourceId.HasValue)
         {
             return NotFound();
         }
 
-        if (!Regex.IsMatch(period, "^[0-9]+[mhd]$"))
+        if (period.IsNullOrEmpty() || !Regex.IsMatch(period, "^[0-9]+[mhd]$"))
         {
             return BadRequest();
         }
