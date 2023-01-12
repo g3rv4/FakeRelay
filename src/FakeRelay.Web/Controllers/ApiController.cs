@@ -1,4 +1,6 @@
 using System.Collections.Immutable;
+using System.Text.RegularExpressions;
+using FakeRelay.Core;
 using FakeRelay.Core.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
@@ -52,5 +54,28 @@ public class ApiController : Controller
         IndexRequests.WithLabels(host).Inc();
         Response.Headers["instance"] = host;
         return Content(response, "application/activity+json");
+    }
+
+    [Route("index-posts-count")]
+    public async Task<ActionResult> IndexedPostsCount(string period)
+    {
+        if (Config.Instance.GrafanaHost.IsNullOrEmpty() || Config.Instance.GrafanaKey.IsNullOrEmpty())
+        {
+            return NotFound();
+        }
+
+        if (!Regex.IsMatch(period, "^[0-9]+[mhd]$"))
+        {
+            return BadRequest();
+        }
+        
+        var host = await GetHostFromRequest();
+        if (host == null)
+        {
+            return Unauthorized();
+        }
+
+        var count = await GrafanaHelper.GetCountInPeriod(host, period);
+        return Content(count.ToString());
     }
 }

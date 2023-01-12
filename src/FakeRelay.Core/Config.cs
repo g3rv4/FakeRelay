@@ -13,6 +13,9 @@ public class Config
     
     public string ConfigPath { get; }
     public string? HomeRedirect { get; }
+    public string? GrafanaHost { get; }
+    public string? GrafanaKey { get; }
+    public int? GrafanaDataSourceId { get; }
 
     private Config()
     {
@@ -20,13 +23,16 @@ public class Config
         PublicKey = Host = ConfigPath = "";
     }
 
-    private Config(string publicKey, byte[] privateKey, string host, string configPath, string? homeRedirect)
+    private Config(string publicKey, byte[] privateKey, string host, string configPath, string? homeRedirect, string? grafanaHost, string? grafanaKey, int? grafanaDataSourceId)
     {
         PrivateKey = privateKey;
         PublicKey = publicKey;
         Host = host;
         ConfigPath = configPath;
         HomeRedirect = homeRedirect;
+        GrafanaHost = grafanaHost;
+        GrafanaKey = grafanaKey;
+        GrafanaDataSourceId = grafanaDataSourceId;
     }
 
     public static void Init(string path)
@@ -50,7 +56,7 @@ public class Config
         using var rsa = RSA.Create();
         rsa.ImportFromPem(data.PrivateKey.ToCharArray());
         
-        Instance = new Config(data.PublicKey, rsa.ExportRSAPrivateKey(), data.Host, path, data.HomeRedirect);
+        Instance = new Config(data.PublicKey, rsa.ExportRSAPrivateKey(), data.Host, path, data.HomeRedirect, data.GrafanaHost, data.GrafanaKey, data.GrafanaDataSourceId);
     }
 
     public static void CreateConfig(string path, string host, string publicKey, string privateKey)
@@ -70,5 +76,8 @@ public class Config
         public string? PrivateKey { get; set; }
         public string? Host { get; set; }
         public string? HomeRedirect { get; set; }
+        public string? GrafanaHost { get; set; }
+        public string? GrafanaKey { get; set; }
+        public int? GrafanaDataSourceId { get; set; }
     }
 }
