@@ -20,13 +20,13 @@ I use it to load content with #hashtags I care about. How? well, that's a separa
 Other people have built other things on top of FakeRelay:
 
 * [Abhinav](https://fantastic.earth/@abnv) wrote [an article](https://notes.abhinavsarkar.net/2022/fake-relay) showing how you can achieve something similar to GetMoarFediverse in Python
-* [Raynor](https://mastodonte.tech/@raynor@raynor.haus) built [Fake Firehose](https://github.com/raynormast/fake-firehose), a tool that streams content from other instances and pushes that to FakeRelay.
+* [Raynor](https://raynor.haus/@raynor) built [Fake Firehose](https://github.com/raynormast/fake-firehose), a tool that streams content from other instances and pushes that to FakeRelay.
 
 ## How can I use it?
 
 ### You need to get an api key
 
-Ask the operator for an api key. If you want an api key for fakerelay.gervas.io, I'm `@g3rv4@mastodonte.tech`. Send me a toot with your instance domain and I'll get you one. The API key will be associated with your domain.
+Ask the operator for an api key. If you want an api key for fakerelay.gervas.io, I'm `@g3rv4@g3rv4.com`. Send me a toot with your instance domain and I'll get you one. The API key will be associated with your domain.
 
 I'm hosting this behind Cloudflare Workers. So if you have a lot of traffic, I'll ask you to run it on your infrastructure :)
 
@@ -38,7 +38,7 @@ You need to go to `/admin/relays` and add `https://fakerelay.gervas.io/inbox` as
 
 ### Figure what you want to index
 
-Use whatever logic you want to find stuff to index. On this example, I want to index `https://mastodonte.tech/users/g3rv4/statuses/109370844647385274`
+Use whatever logic you want to find stuff to index. On this example, I want to index `https://m.g3rv4.com/@g3rv4/110640345952266786`. It's important to note that you *don't send the status' url, but its id*, which you can get by appending `.json` on the url.
 
 ### Do a simple request
 
@@ -48,7 +48,7 @@ And all you need to do is a post asking for the site to index it to your site!
 curl -X "POST" "https://fakerelay.gervas.io/index" \
      -H 'Authorization: Bearer {apiKey}' \
      -H 'Content-Type: application/x-www-form-urlencoded; charset=utf-8' \
-     --data-urlencode "statusUrl=https://mastodonte.tech/users/g3rv4/statuses/109370844647385274"
+     --data-urlencode "statusUrl=https://m.g3rv4.com/users/g3rv4/statuses/110640345952266786"
 ```
 
 ## Can I see a demo?
