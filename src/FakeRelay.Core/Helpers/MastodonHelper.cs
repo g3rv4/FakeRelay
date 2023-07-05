@@ -25,7 +25,7 @@ public static class MastodonHelper
 
     public static async Task<string> SendMessageToInboxAsync(string targetHost, string content)
     {
-        var client = new HttpClient();
+        var client = new HttpClient { Timeout = TimeSpan.FromSeconds(5) };
         client.DefaultRequestHeaders.Add("User-Agent", $"FakeRelay (hosted at {Config.Instance.Host})");
 
         var date = DateTime.UtcNow;
