@@ -1,5 +1,4 @@
 using FakeRelay.Core;
-using FakeRelay.Web.Services;
 using Microsoft.AspNetCore.HttpOverrides;
 using Prometheus;
 
@@ -25,9 +24,6 @@ builder.Services.Configure<ForwardedHeadersOptions>(options =>
     
     options.ForwardLimit = 1;
 });
-
-builder.Services.AddHostedService<QueuedHostedService>();
-builder.Services.AddSingleton<IBackgroundTaskQueue>(_ => new BackgroundTaskQueue(30));
 
 var app = builder.Build();
 
