@@ -8,7 +8,7 @@ public class AcitivityPubController : Controller
 {
    
     [Route("actor")]
-    public async Task<ActionResult> Actor() =>
+    public ActionResult Actor() =>
         Content(MastodonHelper.GetActorStaticContent(), "application/activity+json; charset=utf-8");
     
     [Route("inbox"), HttpPost]
