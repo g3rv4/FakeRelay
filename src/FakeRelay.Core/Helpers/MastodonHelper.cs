@@ -42,8 +42,16 @@ public static class MastodonHelper
         requestContent.Headers.ContentType = new MediaTypeHeaderValue("application/activity+json");
         client.DefaultRequestHeaders.Date = date;
 
-        var response = await client.PostAsync($"https://{targetHost}/inbox", requestContent);
-        return await response.Content.ReadAsStringAsync();
+        try
+        {
+            var response = await client.PostAsync($"https://{targetHost}/inbox", requestContent);
+            return await response.Content.ReadAsStringAsync();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Exception {e.Message} when connecting to {targetHost}");
+            throw;
+        }
     }
 
     public static async Task ProcessInstanceFollowAsync(ActivityPubModel request)
