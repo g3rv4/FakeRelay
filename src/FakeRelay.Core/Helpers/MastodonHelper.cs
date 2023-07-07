@@ -1,4 +1,5 @@
 using System.Net.Http.Headers;
+using System.Text;
 
 namespace FakeRelay.Core.Helpers;
 
@@ -23,28 +24,34 @@ public static class MastodonHelper
 }}");
     }
 
-    public static async Task<string> SendMessageToInboxAsync(string targetHost, string content)
+    private static HttpClient? _client;
+    private static HttpClient Client => _client ??= GetClient();
+
+    private static HttpClient GetClient()
     {
         var client = new HttpClient { Timeout = TimeSpan.FromSeconds(5) };
         client.DefaultRequestHeaders.Add("User-Agent", $"FakeRelay (hosted at {Config.Instance.Host})");
+        return client;
+    }
 
+    public static async Task<string> SendMessageToInboxAsync(string targetHost, string content)
+    {
         var date = DateTime.UtcNow;
         
         var digest = CryptographyHelper.GetSHA256Digest(content);
-        var requestContent = new StringContent(content);
-
-        requestContent.Headers.Add("Digest", "SHA-256=" + digest);
-
+        
+        var request = new HttpRequestMessage(HttpMethod.Post, $"https://{targetHost}/inbox");
+        request.Headers.Date = date;
+        request.Headers.Add("Digest", "SHA-256=" + digest);
+        
+        request.Content = new StringContent(content, Encoding.UTF8, "application/activity+json");
         var stringToSign = $"(request-target): post /inbox\ndate: {date.ToString("R")}\nhost: {targetHost}\ndigest: SHA-256={digest}\ncontent-length: {content.Length}";
         var signature = CryptographyHelper.Sign(stringToSign);
-        requestContent.Headers.Add("Signature", $@"keyId=""https://{Config.Instance.Host}/actor#main-key"",algorithm=""rsa-sha256"",headers=""(request-target) date host digest content-length"",signature=""{signature}""");
-
-        requestContent.Headers.ContentType = new MediaTypeHeaderValue("application/activity+json");
-        client.DefaultRequestHeaders.Date = date;
+        request.Headers.Add("Signature", $@"keyId=""https://{Config.Instance.Host}/actor#main-key"",algorithm=""rsa-sha256"",headers=""(request-target) date host digest content-length"",signature=""{signature}""");
 
         try
         {
-            var response = await client.PostAsync($"https://{targetHost}/inbox", requestContent);
+            var response = await Client.SendAsync(request);
             return await response.Content.ReadAsStringAsync();
         }
         catch (Exception e)
