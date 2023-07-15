@@ -37,8 +37,35 @@ jobs:
           docker tag ghcr.io/g3rv4/fakerelay:latest-${{ matrix.architecture }} ghcr.io/g3rv4/fakerelay:$version-${{ matrix.architecture }}
           docker push ghcr.io/g3rv4/fakerelay:latest-${{ matrix.architecture }}
           docker push ghcr.io/g3rv4/fakerelay:$version-${{ matrix.architecture }}
+  push-manifest:
+    runs-on: ubuntu-latest
+    needs: [ build ]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # get entire git tree, required for nerdbank gitversioning
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build manifest
+        shell: pwsh
+        run: |
+          Push-Location src
+          $version = (nbgv get-version -f json | ConvertFrom-Json).SimpleVersion
+          Write-Host "Version $version"
+          Pop-Location
 
-          if ('${{ matrix.architecture }}' -eq 'amd64') {
-            docker tag ghcr.io/g3rv4/fakerelay:latest-${{ matrix.architecture }} ghcr.io/g3rv4/fakerelay:latest
-            docker push ghcr.io/g3rv4/fakerelay:latest
-          }
+          docker manifest create `
+                ghcr.io/g3rv4/fakerelay:latest `
+                --amend ghcr.io/g3rv4/fakerelay:latest-amd64 `
+                --amend ghcr.io/g3rv4/fakerelay:latest-arm64v8
+          docker manifest create `
+                ghcr.io/g3rv4/fakerelay:$version `
+                --amend ghcr.io/g3rv4/fakerelay:$version-amd64 `
+                --amend ghcr.io/g3rv4/fakerelay:$version-arm64v8
+          docker manifest push ghcr.io/g3rv4/fakerelay:latest
+          docker manifest push ghcr.io/g3rv4/fakerelay:$version
