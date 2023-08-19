@@ -13,6 +13,10 @@ public class ApiController : Controller
     private readonly IMemoryCache _memoryCache;
     private static readonly Counter IndexRequests =
         Metrics.CreateCounter("index_requests", "Requests to index statuses", "instance");
+    private static readonly Counter IndexRequestsTimedOut =
+        Metrics.CreateCounter("index_requests_timed_out", "Requests to index statuses that timed out", "instance");
+    private static readonly Counter IndexRequestsFailed =
+        Metrics.CreateCounter("index_requests_failed", "Requests to index statuses that failed", "instance");
 
     public ApiController(IMemoryCache memoryCache)
     {
@@ -49,9 +53,25 @@ public class ApiController : Controller
         {
             return Unauthorized();
         }
-        
-        var response = await MastodonHelper.EnqueueStatusToFetchAsync(host, statusUrl);
-        IndexRequests.WithLabels(host).Inc();
+
+        string? response;
+        try
+        {
+            response = await MastodonHelper.EnqueueStatusToFetchAsync(host, statusUrl);
+            IndexRequests.WithLabels(host).Inc();
+        }
+        catch (TaskCanceledException)
+        {
+            response = "2s timeout exceeded";
+            IndexRequestsTimedOut.WithLabels(host).Inc();
+        }
+        catch (Exception e)
+        {
+            response = $"Error: {e.Message}";
+            Console.WriteLine($"Error indexing for host {host}: {e}");
+            IndexRequestsFailed.WithLabels(host).Inc();
+        }
+
         Response.Headers["instance"] = host;
         return Content(response, "application/activity+json");
     }

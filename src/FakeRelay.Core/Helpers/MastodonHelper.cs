@@ -1,4 +1,3 @@
-using System.Net.Http.Headers;
 using System.Text;
 
 namespace FakeRelay.Core.Helpers;
@@ -29,7 +28,7 @@ public static class MastodonHelper
 
     private static HttpClient GetClient()
     {
-        var client = new HttpClient { Timeout = TimeSpan.FromSeconds(5) };
+        var client = new HttpClient { Timeout = TimeSpan.FromSeconds(2) };
         client.DefaultRequestHeaders.Add("User-Agent", $"FakeRelay (hosted at {Config.Instance.Host})");
         return client;
     }
@@ -49,16 +48,8 @@ public static class MastodonHelper
         var signature = CryptographyHelper.Sign(stringToSign);
         request.Headers.Add("Signature", $@"keyId=""https://{Config.Instance.Host}/actor#main-key"",algorithm=""rsa-sha256"",headers=""(request-target) date host digest content-length"",signature=""{signature}""");
 
-        try
-        {
-            var response = await Client.SendAsync(request);
-            return await response.Content.ReadAsStringAsync();
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine($"Exception {e.Message} when connecting to {targetHost}");
-            throw;
-        }
+        var response = await Client.SendAsync(request);
+        return await response.Content.ReadAsStringAsync();
     }
 
     public static async Task ProcessInstanceFollowAsync(ActivityPubModel request)
