@@ -12,6 +12,7 @@ Config.Init(builder.Configuration.GetValue<string>("CONFIG_PATH"));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddHttpLogging(_ => { });
 
 builder.Services.Configure<ForwardedHeadersOptions>(options =>
 {
