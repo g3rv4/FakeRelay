@@ -1,7 +1,5 @@
-# syntax=docker/dockerfile:1
-
 ARG ARCH=
-FROM mcr.microsoft.com/dotnet/sdk:8.0.100-1-alpine3.18-${ARCH} AS builder
+FROM mcr.microsoft.com/dotnet/sdk:8.0.100-1-alpine3.18 AS builder
 WORKDIR /src
 COPY src /src/
 RUN dotnet publish -c Release /src/FakeRelay.sln -o /app

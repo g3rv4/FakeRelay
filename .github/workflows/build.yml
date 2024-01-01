@@ -5,4 +5,4 @@ on:
 
 jobs:
   build-containers:
-    uses: g3rv4/actions/.github/workflows/dotnet-webapp.yml@v1
+    uses: g3rv4/actions/.github/workflows/dotnet-webapp.yml@v1.1
