@@ -1,7 +1,7 @@
 #!/bin/ash
 
 if [ "$1" = "web" ]; then
-    web
+    dotnet FakeRelay.Web.dll
 else
-    cli "$@"
+    dotnet FakeRelay.Cli.dll "$@"
 fi
